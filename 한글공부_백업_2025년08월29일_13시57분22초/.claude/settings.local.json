@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(npm install:*)",
+      "Bash(firebase login:*)",
+      "Bash(firebase init:*)",
+      "Bash(firebase deploy:*)",
+      "Bash(copy \"C:\\Users\\aaa\\Documents\\카카오톡 받은 파일\\KakaoTalk_20250822_153513081_04.jpg\" \"C:\\Users\\aaa\\dev\\한글공부\\images\\family_photo.jpg\")",
+      "Bash(python:*)",
+      "Bash(start index.html)",
+      "Bash(copy:*)",
+      "Bash(cp:*)"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\Users\\aaa\\Documents\\카카오톡 받은 파일"
+    ]
+  }
+}
