@@ -1,0 +1,16 @@
+{
+  "github_repo": "https://github.com/comfreec/dev.git",
+  "commit_message": "자동 백업",
+  "backup_history": [
+    {
+      "date": "2025-08-29 13:03:45",
+      "folder": "백업 실패",
+      "status": "실패: 명령어 실행 오류: 명령어 실패: To https://github.com/comfreec/..."
+    },
+    {
+      "date": "2025-08-29 13:08:10",
+      "folder": "한글공부_20250829_130752",
+      "status": "성공"
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간단한 테스트</title>
+</head>
+<body>
+    <h1>글자 인식 테스트</h1>
+    
+    <canvas id="test-canvas" width="300" height="300" style="border: 2px solid black; cursor: crosshair;"></canvas>
+    <br><br>
+    
+    <button onclick="testRecognize()">글자 확인</button>
+    <button onclick="clearTestCanvas()">지우기</button>
+    
+    <div id="result" style="margin-top: 20px; font-size: 24px; font-weight: bold;"></div>
+
+    <script>
+        const testCanvas = document.getElementById('test-canvas');
+        const testCtx = testCanvas.getContext('2d');
+        let isDrawing = false;
+
+        testCtx.lineWidth = 5;
+        testCtx.lineCap = 'round';
+        testCtx.strokeStyle = 'blue';
+
+        // 그리기 이벤트
+        testCanvas.addEventListener('mousedown', startDraw);
+        testCanvas.addEventListener('mousemove', draw);
+        testCanvas.addEventListener('mouseup', stopDraw);
+
+        function startDraw(e) {
+            isDrawing = true;
+            draw(e);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const rect = testCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            testCtx.lineTo(x, y);
+            testCtx.stroke();
+            testCtx.beginPath();
+            testCtx.moveTo(x, y);
+        }
+
+        function stopDraw() {
+            if (isDrawing) {
+                isDrawing = false;
+                testCtx.beginPath();
+                
+                // 자동 인식 (0.5초 후)
+                setTimeout(() => {
+                    testRecognize();
+                }, 500);
+            }
+        }
+
+        function testRecognize() {
+            console.log('testRecognize 호출됨');
+            
+            const result = document.getElementById('result');
+            
+            // 그림이 있는지 확인
+            const imageData = testCtx.getImageData(0, 0, testCanvas.width, testCanvas.height);
+            let hasDrawing = false;
+            
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                if (imageData.data[i + 3] > 0) {
+                    hasDrawing = true;
+                    break;
+                }
+            }
+            
+            if (!hasDrawing) {
+                result.textContent = '글자를 그려보세요!';
+                result.style.color = 'orange';
+                return;
+            }
+            
+            // 랜덤 결과
+            const success = Math.random() > 0.3;
+            
+            if (success) {
+                result.textContent = '맞췄습니다! 🎉';
+                result.style.color = 'green';
+                
+                // 음성
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance('맞췄습니다');
+                    utterance.lang = 'ko-KR';
+                    speechSynthesis.speak(utterance);
+                }
+            } else {
+                result.textContent = '틀렸습니다! 💪';
+                result.style.color = 'red';
+                
+                // 음성
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance('틀렸습니다');
+                    utterance.lang = 'ko-KR';
+                    speechSynthesis.speak(utterance);
+                }
+            }
+        }
+
+        function clearTestCanvas() {
+            testCtx.clearRect(0, 0, testCanvas.width, testCanvas.height);
+            document.getElementById('result').textContent = '';
+        }
+    </script>
+</body>
+</html>
