@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>자음 캔버스 디버그</title>
+</head>
+<body>
+    <h1>자음 캔버스 디버그 테스트</h1>
+    
+    <div>
+        <h2>자음 캔버스 (writing-canvas)</h2>
+        <canvas id="writing-canvas" width="300" height="300" style="border: 2px solid blue; cursor: crosshair;"></canvas>
+        <br>
+        <button onclick="testConsonantRecognize()">자음 인식 테스트</button>
+        <button onclick="clearConsonantCanvas()">자음 지우기</button>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <h2>모음 캔버스 (vowel-canvas)</h2>
+        <canvas id="vowel-canvas" width="300" height="300" style="border: 2px solid red; cursor: crosshair;"></canvas>
+        <br>
+        <button onclick="testVowelRecognize()">모음 인식 테스트</button>
+        <button onclick="clearVowelCanvas()">모음 지우기</button>
+    </div>
+    
+    <div id="logs" style="margin-top: 20px; background: #f0f0f0; padding: 10px; height: 200px; overflow-y: auto;"></div>
+
+    <script>
+        // 로그 출력 함수
+        function log(message) {
+            const logs = document.getElementById('logs');
+            logs.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '<br>';
+            logs.scrollTop = logs.scrollHeight;
+            console.log(message);
+        }
+
+        // 자음 캔버스 변수들
+        let canvas, ctx;
+        let isDrawing = false;
+
+        // 모음 캔버스 변수들  
+        let vowelCanvas, vowelCtx;
+
+        // 초기화
+        log('페이지 로드됨');
+        
+        // 자음 캔버스 초기화
+        canvas = document.getElementById('writing-canvas');
+        if (canvas) {
+            log('자음 캔버스 찾음');
+            ctx = canvas.getContext('2d');
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = 'blue';
+
+            canvas.addEventListener('mousedown', function(e) {
+                log('자음 캔버스 mousedown');
+                isDrawing = true;
+                draw(e);
+            });
+
+            canvas.addEventListener('mousemove', function(e) {
+                if (isDrawing) {
+                    draw(e);
+                }
+            });
+
+            canvas.addEventListener('mouseup', function(e) {
+                log('자음 캔버스 mouseup - 2초 후 자동 인식 시작');
+                if (isDrawing) {
+                    isDrawing = false;
+                    ctx.beginPath();
+                    
+                    setTimeout(() => {
+                        log('자음 자동 인식 실행');
+                        testConsonantRecognize();
+                    }, 2000);
+                }
+            });
+        } else {
+            log('❌ 자음 캔버스를 찾을 수 없음');
+        }
+
+        // 모음 캔버스 초기화
+        vowelCanvas = document.getElementById('vowel-canvas');
+        if (vowelCanvas) {
+            log('모음 캔버스 찾음');
+            vowelCtx = vowelCanvas.getContext('2d');
+            vowelCtx.lineWidth = 5;
+            vowelCtx.lineCap = 'round';
+            vowelCtx.strokeStyle = 'red';
+
+            vowelCanvas.addEventListener('mousedown', function(e) {
+                log('모음 캔버스 mousedown');
+                isDrawing = true;
+                drawVowel(e);
+            });
+
+            vowelCanvas.addEventListener('mousemove', function(e) {
+                if (isDrawing) {
+                    drawVowel(e);
+                }
+            });
+
+            vowelCanvas.addEventListener('mouseup', function(e) {
+                log('모음 캔버스 mouseup - 2초 후 자동 인식 시작');
+                if (isDrawing) {
+                    isDrawing = false;
+                    vowelCtx.beginPath();
+                    
+                    setTimeout(() => {
+                        log('모음 자동 인식 실행');
+                        testVowelRecognize();
+                    }, 2000);
+                }
+            });
+        } else {
+            log('❌ 모음 캔버스를 찾을 수 없음');
+        }
+
+        // 자음 그리기
+        function draw(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        // 모음 그리기
+        function drawVowel(e) {
+            const rect = vowelCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            vowelCtx.lineTo(x, y);
+            vowelCtx.stroke();
+            vowelCtx.beginPath();
+            vowelCtx.moveTo(x, y);
+        }
+
+        // 자음 인식 테스트
+        function testConsonantRecognize() {
+            log('🔍 자음 인식 함수 호출됨');
+            
+            const success = Math.random() > 0.5;
+            if (success) {
+                log('✅ 자음: 맞췄습니다!');
+                speakText('맞췄습니다');
+            } else {
+                log('❌ 자음: 틀렸습니다!');
+                speakText('틀렸습니다');
+            }
+        }
+
+        // 모음 인식 테스트
+        function testVowelRecognize() {
+            log('🔍 모음 인식 함수 호출됨');
+            
+            const success = Math.random() > 0.5;
+            if (success) {
+                log('✅ 모음: 맞췄습니다!');
+                speakText('맞췄습니다');
+            } else {
+                log('❌ 모음: 틀렸습니다!');
+                speakText('틀렸습니다');
+            }
+        }
+
+        // 음성 합성
+        function speakText(text) {
+            log('🔊 음성 재생 시도: ' + text);
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+                
+                setTimeout(() => {
+                    const utterance = new SpeechSynthesisUtterance();
+                    utterance.lang = 'ko-KR';
+                    utterance.text = text;
+                    speechSynthesis.speak(utterance);
+                    log('🔊 음성 재생됨');
+                }, 100);
+            } else {
+                log('❌ 음성 합성 지원 안됨');
+            }
+        }
+
+        // 캔버스 지우기
+        function clearConsonantCanvas() {
+            log('자음 캔버스 지우기');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function clearVowelCanvas() {
+            log('모음 캔버스 지우기');
+            vowelCtx.clearRect(0, 0, vowelCanvas.width, vowelCanvas.height);
+        }
+    </script>
+</body>
+</html>
