@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>초간단 테스트</title>
+</head>
+<body>
+    <h1>초간단 테스트</h1>
+    
+    <button onclick="test1()">버튼 테스트</button>
+    <button onclick="test2()">음성 테스트</button>
+    
+    <div id="message"></div>
+    
+    <canvas id="canvas" width="200" height="200" style="border:1px solid black;"></canvas>
+    <br>
+    <button onclick="drawTest()">그리기 테스트</button>
+
+    <script>
+        function test1() {
+            alert('버튼이 작동합니다!');
+            document.getElementById('message').innerHTML = '<h2 style="color: green;">버튼 작동 확인!</h2>';
+        }
+        
+        function test2() {
+            document.getElementById('message').innerHTML = '<h2 style="color: blue;">음성 테스트 중...</h2>';
+            
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance('안녕하세요');
+                utterance.lang = 'ko-KR';
+                speechSynthesis.speak(utterance);
+                document.getElementById('message').innerHTML = '<h2 style="color: green;">음성 재생됨!</h2>';
+            } else {
+                document.getElementById('message').innerHTML = '<h2 style="color: red;">음성 지원 안됨</h2>';
+            }
+        }
+        
+        function drawTest() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 빨간 원 그리기
+            ctx.fillStyle = 'red';
+            ctx.beginPath();
+            ctx.arc(100, 100, 50, 0, Math.PI * 2);
+            ctx.fill();
+            
+            document.getElementById('message').innerHTML = '<h2 style="color: purple;">그리기 완료!</h2>';
+        }
+        
+        console.log('JavaScript 로드됨');
+    </script>
+</body>
+</html>
