@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(c:\\Users\\aaa\\Downloads/**)",
+      "Bash(firebase --version)",
+      "Bash(firebase login:ci:*)",
+      "Bash(firebase login:*)",
+      "Bash(firebase:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

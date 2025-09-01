@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>코웨이 멤버십 가입</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #0066cc;
+            margin-bottom: 40px;
+            font-size: 28px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        input:focus, select:focus {
+            border-color: #0066cc;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,102,204,0.3);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+        
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+        
+        .radio-group input[type="radio"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .membership-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 11px;
+            min-width: 600px;
+        }
+        
+        .membership-table th,
+        .membership-table td {
+            border: 1px solid #ddd;
+            padding: 6px 4px;
+            text-align: center;
+            white-space: nowrap;
+            font-size: 10px;
+        }
+        
+        .membership-table th {
+            background-color: #0066cc;
+            color: white;
+        }
+        
+        .membership-table .size-column {
+            background-color: #f0f8ff;
+            font-weight: bold;
+        }
+        
+        .submit-btn {
+            background-color: #0066cc;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0055aa;
+        }
+        
+        .settings-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #666;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 1000;
+        }
+        
+        .settings-btn:hover {
+            background-color: #555;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+        
+        .modal h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .membership-table {
+                font-size: 9px;
+                min-width: 550px;
+            }
+            
+            .membership-table th,
+            .membership-table td {
+                padding: 4px 2px;
+                font-size: 9px;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: none;
+            }
+            
+            .submit-btn, .settings-btn {
+                display: none;
+            }
+            
+            .membership-table {
+                font-size: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 설정 버튼 -->
+    <button class="settings-btn" onclick="openSettings()">⚙️</button>
+    
+    <!-- 설정 모달 -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSettings()">&times;</span>
+            <h2>팀장님 전화번호 설정</h2>
+            <div class="form-group">
+                <label for="team-leader-phone">팀장님 전화번호</label>
+                <input type="tel" id="team-leader-phone" placeholder="010-0000-0000">
+            </div>
+            <button onclick="saveSettings()" class="submit-btn">저장</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>코웨이 멤버십 가입</h1>
+        
+        <form>
+            <!-- 고객 정보 섹션 -->
+            <div class="form-section">
+                <div class="section-title">고객 정보</div>
+                
+                <div class="form-group">
+                    <label for="customer-name">고객님 성함</label>
+                    <input type="text" id="customer-name" name="customer-name">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">연락처</label>
+                        <input type="tel" id="phone" name="phone" placeholder="010-0000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="carrier">통신사</label>
+                        <select id="carrier" name="carrier">
+                            <option value="">선택</option>
+                            <option value="SK">SK</option>
+                            <option value="KT">KT</option>
+                            <option value="LG">LG</option>
+                            <option value="알뜰폰">알뜰폰</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="sub-carrier-group" style="display: none;">
+                        <label for="sub-carrier">알뜰폰 통신망</label>
+                        <select id="sub-carrier" name="sub-carrier">
+                            <option value="">선택</option>
+                            <option value="SK">SK망</option>
+                            <option value="KT">KT망</option>
+                            <option value="LG">LG망</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birth-date">생년월일</label>
+                        <input type="text" id="birth-date" name="birth-date" placeholder="예) 1990-01-01 또는 19900101">
+                    </div>
+                    <div class="form-group">
+                        <label>성별</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="gender" value="male"> 남성</label>
+                            <label><input type="radio" name="gender" value="female"> 여성</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">해당 주소</label>
+                    <input type="text" id="address" name="address" placeholder="주소를 입력해주세요">
+                </div>
+            </div>
+            
+            <!-- 결제 정보 섹션 -->
+            <div class="form-section">
+                <div class="section-title">결제 정보</div>
+                
+                <div class="form-group">
+                    <label>결제 방법</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="payment-method" value="bank"> 은행이체</label>
+                        <label><input type="radio" name="payment-method" value="card"> 카드결제</label>
+                    </div>
+                </div>
+                
+                <div id="bank-info" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bank-name">은행명</label>
+                            <input type="text" id="bank-name" name="bank-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="account-holder">예금주</label>
+                            <input type="text" id="account-holder" name="account-holder">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="account-number">계좌번호</label>
+                        <input type="text" id="account-number" name="account-number">
+                    </div>
+                </div>
+                
+                <div id="card-info" style="display: none;">
+                    <div class="form-group">
+                        <label for="card-company">카드사</label>
+                        <input type="text" id="card-company" name="card-company">
+                    </div>
+                    <div class="form-group">
+                        <label for="card-number">카드번호</label>
+                        <input type="text" id="card-number" name="card-number" placeholder="0000-0000-0000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="expiry">유효기간</label>
+                        <input type="text" id="expiry" name="expiry" placeholder="MM/YY">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="payment-date">결제일</label>
+                    <select id="payment-date" name="payment-date">
+                        <option value="">선택</option>
+                        <option value="10">10일</option>
+                        <option value="20">20일</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- 멤버십 정보 섹션 -->
+            <div class="form-section">
+                <div class="section-title">멤버십 정보</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-size">멤버십 제품 사이즈</label>
+                        <select id="product-size" name="product-size">
+                            <option value="">선택</option>
+                            <option value="single">싱글/슈퍼싱글</option>
+                            <option value="double">더블/퀸</option>
+                            <option value="king">킹</option>
+                            <option value="large-king">라지킹</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contract-period">약정기간</label>
+                        <select id="contract-period" name="contract-period">
+                            <option value="">선택</option>
+                            <option value="1year">1년 멤버십</option>
+                            <option value="2year-discount" selected>2년 약정 (15% 할인)</option>
+                            <option value="1year-prepaid">1년 선납 (5% 할인)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 메트리스 케어 서비스 요금표 -->
+            <div class="form-section">
+                <div class="section-title">메트리스 케어 서비스 멤버십 요금표</div>
+                <div style="overflow-x: auto;">
+                
+                <table class="membership-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">구분</th>
+                            <th rowspan="2">서비스주기</th>
+                            <th colspan="3">멤버십 회비 (월 요금)</th>
+                            <th rowspan="2">1회 서비스 요금</th>
+                        </tr>
+                        <tr>
+                            <th>1년 멤버십</th>
+                            <th>2년 약정<br>(15% 할인)</th>
+                            <th>1년 선납<br>(5% 할인)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="2" class="size-column">싱글/슈퍼싱글</td>
+                            <td>3개월</td>
+                            <td>11,500원</td>
+                            <td>9,700원</td>
+                            <td>131,100원</td>
+                            <td rowspan="2">45,000원</td>
+                        </tr>
+                        <tr>
+                            <td>4개월</td>
+                            <td>8,700원</td>
+                            <td>7,300원</td>
+                            <td>99,100원</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" class="size-column">더블/퀸</td>
+                            <td>3개월</td>
+                            <td>12,500원</td>
+                            <td>10,600원</td>
+                            <td>142,500원</td>
+                            <td rowspan="2">50,000원</td>
+                        </tr>
+                        <tr>
+                            <td>4개월</td>
+                            <td>9,700원</td>
+                            <td>8,200원</td>
+                            <td>110,500원</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" class="size-column">킹</td>
+                            <td>3개월</td>
+                            <td>14,500원</td>
+                            <td>12,300원</td>
+                            <td>165,300원</td>
+                            <td rowspan="2">55,000원</td>
+                        </tr>
+                        <tr>
+                            <td>4개월</td>
+                            <td>11,000원</td>
+                            <td>9,300원</td>
+                            <td>125,400원</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" class="size-column">라지킹</td>
+                            <td>3개월</td>
+                            <td>16,000원</td>
+                            <td>13,600원</td>
+                            <td>182,400원</td>
+                            <td rowspan="2">60,000원</td>
+                        </tr>
+                        <tr>
+                            <td>4개월</td>
+                            <td>12,500원</td>
+                            <td>10,600원</td>
+                            <td>142,500원</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">팀장님에게 전송</button>
+        </form>
+    </div>
+    
+    <script>
+        // 설정 관련 함수들
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'block';
+            // 기존에 저장된 전화번호 불러오기
+            const savedPhone = localStorage.getItem('teamLeaderPhone');
+            if (savedPhone) {
+                document.getElementById('team-leader-phone').value = savedPhone;
+            }
+        }
+        
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+        
+        function saveSettings() {
+            const phone = document.getElementById('team-leader-phone').value;
+            if (phone) {
+                localStorage.setItem('teamLeaderPhone', phone);
+                alert('팀장님 전화번호가 저장되었습니다.');
+                closeSettings();
+            } else {
+                alert('전화번호를 입력해주세요.');
+            }
+        }
+        
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            const modal = document.getElementById('settingsModal');
+            if (event.target == modal) {
+                closeSettings();
+            }
+        }
+        
+        // 가입 신청 폼 제출 처리
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const teamLeaderPhone = localStorage.getItem('teamLeaderPhone');
+            if (!teamLeaderPhone) {
+                alert('먼저 팀장님 전화번호를 설정해주세요. (우측 상단 ⚙️ 버튼)');
+                return;
+            }
+            
+            // 폼 데이터 수집
+            const formData = {
+                customerName: document.getElementById('customer-name').value,
+                phone: document.getElementById('phone').value,
+                carrier: document.getElementById('carrier').value,
+                subCarrier: document.getElementById('sub-carrier').value,
+                birthDate: document.getElementById('birth-date').value,
+                gender: document.querySelector('input[name="gender"]:checked')?.value,
+                address: document.getElementById('address').value,
+                paymentMethod: document.querySelector('input[name="payment-method"]:checked')?.value,
+                bankName: document.getElementById('bank-name').value,
+                accountHolder: document.getElementById('account-holder').value,
+                accountNumber: document.getElementById('account-number').value,
+                cardCompany: document.getElementById('card-company').value,
+                cardNumber: document.getElementById('card-number').value,
+                expiry: document.getElementById('expiry').value,
+                paymentDate: document.getElementById('payment-date').value,
+                productSize: document.getElementById('product-size').value,
+                contractPeriod: document.getElementById('contract-period').value
+            };
+            
+            // 문자 메시지 내용 생성
+            const message = createSMSMessage(formData);
+            
+            // SMS 앱으로 리디렉션
+            const smsUrl = `sms:${teamLeaderPhone}?body=${encodeURIComponent(message)}`;
+            window.location.href = smsUrl;
+        });
+        
+        function createSMSMessage(data) {
+            let message = '[코웨이 멤버십 가입 신청]\n\n';
+            
+            message += '고객 정보\n';
+            message += `성함: ${data.customerName || '미입력'}\n`;
+            message += `연락처: ${data.phone || '미입력'}\n`;
+            const carrierText = data.carrier === '알뜰폰' && data.subCarrier 
+                ? `${data.carrier} (${data.subCarrier})`
+                : data.carrier || '미입력';
+            message += `통신사: ${carrierText}\n`;
+            message += `생년월일: ${data.birthDate || '미입력'}\n`;
+            message += `성별: ${data.gender === 'male' ? '남성' : data.gender === 'female' ? '여성' : '미입력'}\n`;
+            message += `주소: ${data.address || '미입력'}\n\n`;
+            
+            message += '결제 정보\n';
+            if (data.paymentMethod === 'bank') {
+                message += `결제방법: 은행이체\n`;
+                message += `은행명: ${data.bankName || '미입력'}\n`;
+                message += `예금주: ${data.accountHolder || '미입력'}\n`;
+                message += `계좌번호: ${data.accountNumber || '미입력'}\n`;
+            } else if (data.paymentMethod === 'card') {
+                message += `결제방법: 카드결제\n`;
+                message += `카드사: ${data.cardCompany || '미입력'}\n`;
+                message += `카드번호: ${data.cardNumber || '미입력'}\n`;
+                message += `유효기간: ${data.expiry || '미입력'}\n`;
+            } else {
+                message += `결제방법: 미선택\n`;
+            }
+            message += `결제일: ${data.paymentDate ? data.paymentDate + '일' : '미입력'}\n\n`;
+            
+            message += '멤버십 정보\n';
+            const sizeMap = {
+                'single': '싱글/슈퍼싱글',
+                'double': '더블/퀸',  
+                'king': '킹',
+                'large-king': '라지킹'
+            };
+            const contractMap = {
+                '1year': '1년 멤버십',
+                '2year-discount': '2년 약정 (15% 할인)',
+                '1year-prepaid': '1년 선납 (5% 할인)'
+            };
+            message += `제품 사이즈: ${sizeMap[data.productSize] || data.productSize || '미입력'}\n`;
+            message += `약정 기간: ${contractMap[data.contractPeriod] || data.contractPeriod || '미입력'}\n\n`;
+            
+            message += '처리 요청드립니다.';
+            
+            return message;
+        }
+        
+        // 통신사 선택에 따른 알뜰폰 망 선택 표시/숨김
+        document.getElementById('carrier').addEventListener('change', function() {
+            const subCarrierGroup = document.getElementById('sub-carrier-group');
+            if (this.value === '알뜰폰') {
+                subCarrierGroup.style.display = 'block';
+            } else {
+                subCarrierGroup.style.display = 'none';
+                document.getElementById('sub-carrier').value = '';
+            }
+        });
+        
+        // 결제 방법에 따른 정보 표시/숨김
+        const paymentMethodRadios = document.querySelectorAll('input[name="payment-method"]');
+        const bankInfo = document.getElementById('bank-info');
+        const cardInfo = document.getElementById('card-info');
+        
+        paymentMethodRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'bank') {
+                    bankInfo.style.display = 'block';
+                    cardInfo.style.display = 'none';
+                } else if (this.value === 'card') {
+                    bankInfo.style.display = 'none';
+                    cardInfo.style.display = 'block';
+                }
+            });
+        });
+        
+        // 카드번호 자동 하이픈 추가
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            let formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1-');
+            if (formattedValue.length <= 19) {
+                e.target.value = formattedValue;
+            }
+        });
+        
+        // 전화번호 자동 하이픈 추가 (고객 연락처)
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            let formattedValue = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            if (value.length <= 11) {
+                e.target.value = formattedValue;
+            }
+        });
+        
+        // 전화번호 자동 하이픈 추가 (팀장님 연락처)
+        document.getElementById('team-leader-phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            let formattedValue = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            if (value.length <= 11) {
+                e.target.value = formattedValue;
+            }
+        });
+    </script>
+</body>
+</html>
