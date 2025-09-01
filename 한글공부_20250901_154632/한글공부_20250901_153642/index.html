@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예준이의 한글나라 🚀</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="family-photo-section">
+                    <img src="images/family_photo.jpg" alt="예준이와 아빠의 특별한 순간" class="family-photo">
+                    <div class="photo-caption">
+                        <span>👨‍👦 예준이와 아빠의 소중한 추억</span>
+                    </div>
+                </div>
+                <div class="title-section">
+                    <h1>🚀 예준이의 한글나라 🌟</h1>
+                    <p class="welcome-message">사랑하는 예준이를 위한 특별한 한글 공부 사이트! 🌈</p>
+                </div>
+            </div>
+            <div class="score-board">
+                <span class="score">점수: <span id="score">0</span></span>
+                <span class="level">레벨: <span id="level">1</span></span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <nav class="game-menu">
+                <button class="menu-btn active" onclick="showGame('consonants')">
+                    🎵 자음배우기
+                </button>
+                <button class="menu-btn" onclick="showGame('vowels')">
+                    🎶 모음배우기
+                </button>
+                <button class="menu-btn" onclick="showGame('words')">
+                    🎯 단어게임
+                </button>
+                <button class="menu-btn" onclick="showGame('syllables')">
+                    🧩 글자조합
+                </button>
+                <button class="menu-btn" onclick="showGame('memories')">
+                    📸 추억갤러리
+                </button>
+            </nav>
+
+            <!-- 자음 학습 게임 -->
+            <div id="consonants-game" class="game-section active">
+                <div class="notebook-layout">
+                    <!-- 왼쪽 페이지: 글자 표시 -->
+                    <div class="left-page">
+                        <div class="letter-card">
+                            <div class="big-letter-display" id="current-consonant">ㄱ</div>
+                            <button class="sound-button" onclick="playSound('consonant')">
+                                🔊
+                            </button>
+                        </div>
+                        <div class="letter-title">
+                            <span id="consonant-name">기역</span>
+                            <span class="letter-subtitle">[Giyeok]</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 오른쪽 페이지: 획순 가이드 -->
+                    <div class="right-page">
+                        <div class="stroke-guide-area">
+                            <canvas id="stroke-guide-canvas" width="350" height="450"></canvas>
+                            <canvas id="writing-canvas" width="350" height="450"></canvas>
+                        </div>
+                        <div class="guide-controls">
+                            <button class="guide-btn primary" onclick="showNextStroke()">다음 획 보기</button>
+                            <button class="guide-btn secondary" onclick="clearCanvas()">지우기</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="consonant-grid">
+                    <div class="consonant-item" onclick="selectConsonant('ㄱ')">ㄱ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㄴ')">ㄴ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㄷ')">ㄷ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㄹ')">ㄹ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㅁ')">ㅁ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㅂ')">ㅂ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㅅ')">ㅅ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㅇ')">ㅇ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㅈ')">ㅈ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㅊ')">ㅊ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㅋ')">ㅋ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㅌ')">ㅌ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㅍ')">ㅍ</div>
+                    <div class="consonant-item" onclick="selectConsonant('ㅎ')">ㅎ</div>
+                </div>
+            </div>
+
+            <!-- 모음 학습 게임 -->
+            <div id="vowels-game" class="game-section">
+                <h2>🎶 모음을 배워보자!</h2>
+                <div class="notebook-layout">
+                    <!-- 왼쪽 페이지: 모음 표시 -->
+                    <div class="left-page">
+                        <div class="letter-card">
+                            <div class="big-letter-display" id="current-vowel">ㅏ</div>
+                            <button class="sound-button" onclick="playSound('vowel')">
+                                🔊
+                            </button>
+                        </div>
+                        <div class="letter-title">
+                            <span id="vowel-name">아</span>
+                            <span class="letter-subtitle">[A]</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 오른쪽 페이지: 획순 가이드 -->
+                    <div class="right-page">
+                        <div class="stroke-guide-area">
+                            <canvas id="vowel-guide-canvas" width="350" height="450"></canvas>
+                            <canvas id="vowel-canvas" width="350" height="450"></canvas>
+                        </div>
+                        <div class="guide-controls">
+                            <button class="guide-btn primary" onclick="showNextVowelStroke()">다음 획 보기</button>
+                            <button class="guide-btn secondary" onclick="clearVowelCanvas()">지우기</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="vowel-grid">
+                    <div class="vowel-item" onclick="selectVowel('ㅏ')">ㅏ</div>
+                    <div class="vowel-item" onclick="selectVowel('ㅑ')">ㅑ</div>
+                    <div class="vowel-item" onclick="selectVowel('ㅓ')">ㅓ</div>
+                    <div class="vowel-item" onclick="selectVowel('ㅕ')">ㅕ</div>
+                    <div class="vowel-item" onclick="selectVowel('ㅗ')">ㅗ</div>
+                    <div class="vowel-item" onclick="selectVowel('ㅛ')">ㅛ</div>
+                    <div class="vowel-item" onclick="selectVowel('ㅜ')">ㅜ</div>
+                    <div class="vowel-item" onclick="selectVowel('ㅠ')">ㅠ</div>
+                    <div class="vowel-item" onclick="selectVowel('ㅡ')">ㅡ</div>
+                    <div class="vowel-item" onclick="selectVowel('ㅣ')">ㅣ</div>
+                </div>
+            </div>
+
+            <!-- 단어 게임 -->
+            <div id="words-game" class="game-section">
+                <h2>🎯 단어 맞추기 게임!</h2>
+                <div class="word-game-area">
+                    <div class="word-image-container">
+                        <div class="word-image" id="word-image">🚗</div>
+                        <div class="word-hint">이것은 무엇일까요?</div>
+                    </div>
+                    <div class="word-options">
+                        <button class="word-option" onclick="selectWord('자동차')">자동차</button>
+                        <button class="word-option" onclick="selectWord('비행기')">비행기</button>
+                        <button class="word-option" onclick="selectWord('기차')">기차</button>
+                    </div>
+                    <div class="word-feedback" id="word-feedback"></div>
+                    <button class="next-word-btn" onclick="nextWord()" style="display:none;">다음 문제</button>
+                </div>
+            </div>
+
+            <!-- 글자 조합 게임 -->
+            <div id="syllables-game" class="game-section">
+                <h2>🧩 글자를 조합해보자!</h2>
+                <div class="syllable-game-area">
+                    <div class="target-syllable">
+                        <div class="syllable-display" id="target-syllable">가</div>
+                        <button class="sound-btn" onclick="playSound('syllable')">🔊</button>
+                    </div>
+                    <div class="syllable-parts">
+                        <div class="part-container">
+                            <div class="part-label">자음</div>
+                            <div class="part-options" id="consonant-options">
+                                <div class="part-option" onclick="selectPart('consonant', 'ㄱ')">ㄱ</div>
+                                <div class="part-option" onclick="selectPart('consonant', 'ㄴ')">ㄴ</div>
+                                <div class="part-option" onclick="selectPart('consonant', 'ㄷ')">ㄷ</div>
+                            </div>
+                        </div>
+                        <div class="part-container">
+                            <div class="part-label">모음</div>
+                            <div class="part-options" id="vowel-options">
+                                <div class="part-option" onclick="selectPart('vowel', 'ㅏ')">ㅏ</div>
+                                <div class="part-option" onclick="selectPart('vowel', 'ㅓ')">ㅓ</div>
+                                <div class="part-option" onclick="selectPart('vowel', 'ㅗ')">ㅗ</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-area">
+                        <div class="combined-syllable" id="combined-syllable">?</div>
+                        <button class="check-btn" onclick="checkSyllable()">확인하기</button>
+                    </div>
+                    <div class="syllable-feedback" id="syllable-feedback"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 성공 애니메이션 -->
+        <div class="success-animation" id="success-animation">
+            <div class="fireworks">🎉</div>
+            <div class="success-text">잘했어요! 🌟</div>
+        </div>
+
+        <!-- 보상 시스템 -->
+        <div class="rewards-panel" id="rewards-panel">
+            <h3>🏆 예준이의 보상</h3>
+            <div class="stars-earned">
+                <span>획득한 별: </span>
+                <div class="stars" id="stars-display">⭐⭐⭐</div>
+            </div>
+            <div class="achievements">
+                <div class="achievement">🥇 첫 글자 마스터</div>
+                <div class="achievement">🚀 단어 탐험가</div>
+                <div class="achievement">🧩 조합의 달인</div>
+            </div>
+        </div>
+
+        <!-- 추억 갤러리 섹션 -->
+        <div id="memories-game" class="game-section">
+            <h2>📸 예준이의 추억 갤러리</h2>
+            <div class="memories-gallery">
+                <div class="memory-card main-photo">
+                    <img src="images/family_photo.jpg" alt="예준이와 아빠의 해변 여행" class="memory-image">
+                    <div class="memory-description">
+                        <h3>🏖️ 아빠와 해변에서</h3>
+                        <p>예준이가 아빠와 함께 해변에서 즐거운 시간을 보내고 있어요! 파도 소리를 들으며 모래성도 만들고, 예쁜 조개도 주워보았던 소중한 추억이에요. 🐚🌊</p>
+                        <div class="memory-words">
+                            <span class="word-tag" onclick="exploreWordTag('바다')">🌊 바다</span>
+                            <span class="word-tag" onclick="exploreWordTag('모래')">🏖️ 모래</span>
+                            <span class="word-tag" onclick="exploreWordTag('조개')">🐚 조개</span>
+                            <span class="word-tag" onclick="exploreWordTag('아빠')">👨‍👦 아빠</span>
+                            <span class="word-tag" onclick="exploreWordTag('웃음')">😊 웃음</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="memories-activities">
+                    <h3>🎆 추억과 함께 한글 공부하기!</h3>
+                    <div class="activity-cards">
+                        <div class="activity-card" onclick="startMemoryWordGame()">
+                            <div class="activity-icon">🌊</div>
+                            <h4>해변 단어 찾기</h4>
+                            <p>사진 속 해변에서 볼 수 있는 것들의 이름을 맞춰보세요!</p>
+                        </div>
+                        <div class="activity-card" onclick="writeMemoryStory()">
+                            <div class="activity-icon">✏️</div>
+                            <h4>추억 일기 쓰기</h4>
+                            <p>오늘의 즐거운 경험을 한글로 써보세요!</p>
+                        </div>
+                        <div class="activity-card" onclick="familyWordChallenge()">
+                            <div class="activity-icon">👨‍👩‍👦</div>
+                            <h4>가족 단어 챌린지</h4>
+                            <p>가족과 관련된 예쁜 단어들을 찾아보세요!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
